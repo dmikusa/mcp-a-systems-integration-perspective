@@ -83,7 +83,7 @@ While I'm not covering WiFi or buildpacks in this talk, if you're curious feel f
 
 <div class="center-img">
 
-![drop-shadow height:12em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/qr-code.png)
+![drop-shadow height:12em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/slides-qrcode.png)
 
 </div>
 <div style="text-align: center; padding-top: 0.5em;">
@@ -98,7 +98,13 @@ Slides are available at the link above.
 
 ---
 
+<!-- 
+_footer: Photo by <a href="https://unsplash.com/@officestock?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sebastian Herrmann</a> on <a href="https://unsplash.com/photos/a-man-sitting-in-front-of-a-laptop-computer-Ili1gmB9Jes?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+-->
+
 # Why are we here today?
+
+![bg right:60%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/sebastian-herrmann-Ili1gmB9Jes-unsplash.jpg)
 
 <!--
 I wrote a remote MCP server for work & there were a number of challenges to doing that. This talk is a chance to share my learnings and to help steer folks in a direction that saves them time and tears.
