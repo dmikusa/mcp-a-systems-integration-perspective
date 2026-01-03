@@ -98,19 +98,55 @@ Slides are available at the link above.
 
 ---
 
+# Why are we here today?
+
+<!--
+Dramatic pause...
+-->
+
+---
+
 <!-- 
 _footer: Photo by <a href="https://unsplash.com/@officestock?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sebastian Herrmann</a> on <a href="https://unsplash.com/photos/a-man-sitting-in-front-of-a-laptop-computer-Ili1gmB9Jes?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
 -->
 
-# Why are we here today?
+# MCP is Hard
 
 ![bg right:60%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/sebastian-herrmann-Ili1gmB9Jes-unsplash.jpg)
 
 <!--
-I wrote a remote MCP server for work & there were a number of challenges to doing that. This talk is a chance to share my learnings and to help steer folks in a direction that saves them time and tears.
+I wrote a remote MCP server for work and it's hard. It shouldn't be though.
+
+MCP is a challenge at the moment for two reasons.
+
+1. It's not a finished protocol. MCP is at present has slowed down a bit, compared to six months ago, but it's still a moving target. Projects and vendors that implement the spec are keeping up at different paces. They don't all implement the full spec, so things might be missing (or implemented at later dates). Implementations are all new, so none of them are really battle tested, which means you will hit bugs. Last, but not least, there are some "interesting" OAuth2 requirements with MCP, that can be a pain. 
+
+2. In case you've been living under a rock, there's a lot of hype around MCP at the moment. If you're tasked with implementing MCP at work, all the hype becomes an annoyance because now you have to parse through the hype in addition to learning something new.
+
+
+This talk is a chance to share my learnings, cut through the hype and basically give you all a free consulting session on MCP.
 -->
 
 ---
+
+
+---
+
+<style scoped>
+img {
+    padding-top: 1.5em;
+    height: 300px;
+    width: 300px;
+}
+</style>
+
+# Feedback
+
+<div class="only-img">
+
+![bg](model-context-protocol-a-systems-integration-pers_mikusa_1024007_feedback-code.png)
+
+</div>
 
 ---
 
