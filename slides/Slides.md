@@ -253,24 +253,40 @@ Good news! All the patterns you already use will work just fine for MCP.
 </div>
 
 <!--
-- Just like most APIs, most MCP services are going to require authentication.
+The minute you host your service, things will be probing it.
+
+- Just like most APIs, most MCP services are going to require authentication. Unless you're hosting public information, like with the demo MCP server.
 - Just like when building an API, for MCP, we are going to reach for OAuth2 & OIDC to secure our service.
-- You do not need to use OAuth2, MCP allows for no authentication and for using an API key, but it is strongly recommended and, just like with an API, it provides the best experience for user.
+- Technically, you do not need to use OAuth2. MCP allows for using an API key, but it is strongly recommended that you use OAuth2, just like with an API, it provides the most control for you and the best experience for user.
 -->
 
 ---
 
 # What's the same?
 
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/spidermans.jpg)
+
+</div>
+
 <!--
-- Fortunately, if you've secured a API with OAuth2, securing your MCP service will be very similar.
-- Just like your API, your MCP service is considered a resource server. This means that it needs to take the user's token, probably a JWT, verify it, and then use the information in the token to identify the user and make decisions about what the user can access.
-- This will typically be handled by the framework you're using automatically. FastMCP, which is based on FastAPI, will do this. So does Spring AI, through Spring Security. If your framework of choice doesn't handle this out-of-the-box, then you want to look for a library or extension to your language/framework of choice that provides this functionality. The requirements are not extremely difficult to implement, but as with all things security, you don't want to reimplement something when there is a trusted option available.
+- Fortunately, if you've secured other APIs with OAuth2, securing your MCP service will be very similar. 80% of what you do for your other APIs will be the same for MCP.
+- Just like your other APIs, your MCP service is considered a resource server. This means that it needs to take the user's token, probably a JWT token, and verify it. From there, your app can use the information in the token to identify the user and make decisions about what the user can access.
+- What's even better is that this will typically be handled by the framework you're using, automatically. 
+  
+  FastMCP, which is based on FastAPI, will do this. So does Spring AI, through Spring Security. If for some reason your framework of choice doesn't handle this out-of-the-box, then you want to look for a library or extension to provides this functionality. The requirements of a resource server are not extremely difficult to implement, but friends don't let friends reimplement security critical code, so if there is a trusted option available, use it.
 -->
 
 ---
 
 # What's different?
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/senior-chang-squinting.jpg)
+
+</div>
 
 <!--
 - Primarily, it's the client. For a REST API, the client is going to be your SPA app or your Mobile App, or possibly some scripts running using a client credentials grant. These are all things you control, and you would typically defined each of these clients for each of these services statically in your IDP.
@@ -282,6 +298,12 @@ Good news! All the patterns you already use will work just fine for MCP.
 
 # Dynamic Client Registration (RFC-7591)
 
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dog-on-fire.jpg)
+
+</div>
+
 <!--
 - What is DCR? Well, in a nutshell, DCR just requires your IDP to provide an additional endpoint. Potential clients can then send a request to that endpoint which creates a new client with the IDP. The client can then uses the returned client information just like any client created by the IDP.
 - Dynamic Client Registration isn't new for MCP. It existed before MCP, but wasn't very popular or used much.
@@ -291,6 +313,12 @@ Good news! All the patterns you already use will work just fine for MCP.
 ---
 
 # Why DCR is not the answer?
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dcr-bad.jpg)
+
+</div>
 
 <!--
 1. Not all IDPs implement DCR. The ones that do, don't necessarily implement it well.
@@ -302,6 +330,12 @@ Good news! All the patterns you already use will work just fine for MCP.
 ---
 
 # Client ID Metadata Documents (CIMD)
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/take-my-money.jpg)
+
+</div>
 
 <!--
 - Fortunately, there is something better: [Client ID Metadata Documents (CIMD)](https://client.dev/).
@@ -320,10 +354,6 @@ Only implement DCR in a new service as a last resort, like if you have a particu
 -->
 
 ---
-
-<!-- 
-_footer: Photo by <a href="https://unsplash.com/@officestock?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Sebastian Herrmann</a> on <a href="https://unsplash.com/photos/a-man-sitting-in-front-of-a-laptop-computer-Ili1gmB9Jes?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
--->
 
 # Summary
 
