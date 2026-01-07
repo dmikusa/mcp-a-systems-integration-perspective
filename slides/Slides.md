@@ -131,7 +131,7 @@ Model Context Protocol
 
 <div class="only-img big-div">
 
-:thinking:
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/why-do-we-need-mcp.jpg)
 
 </div>
 
@@ -149,17 +149,10 @@ Why do we need MCP? What properties does it have that are valuable?
 
 # Why not Rest and Open API?
 
-<div class="columns">
-<div class="column" style="margin-top: 2em; margin-left: 2em">
+<div class="only-img big-div">
 
-![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rest-api-icon.webp)
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rest-openapi-mcp.jpg)
 
-</div>
-<div class="column center-img" style="margin-top: 6em; margin-right: 2em">
-
-![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/OpenAPI_Logo_Pantone-1.png)
-
-</div>
 </div>
 
 <!--
@@ -174,7 +167,11 @@ Why do we need MCP? What properties does it have that are valuable?
 
 # So MCP Everywhere?
 
+<div class="only-img">
+
 ![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/all-your-bases.jpg)
+
+</div>
 
 <!--
 Do you replace your REST/OpenAPI services with it?
@@ -184,14 +181,20 @@ No! It’s not generally useful to say a web or mobile client, but is useful to 
 
 ---
 
+# Trust Your Instincts
+
+<div class="only-img" style="margin-top: -1em">
+
 ![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/glasses-api-mcp.jpg)
+
+</div>
 
 <!--
 This is not a new Problem!
 
-You might be thinking, this is not a new problem. As API designers, we have to support may different clients. They all of different capabilities and needs. Not one protocol or approach is going to be perfect for all of them.
+As API designers, we have to support may different clients, and MCP is no different. Every client has different capabilities and needs. Not one protocol or approach is going to be perfect for all of them.
 
-This is why, at it's core, remote MCP is really just a systems integration problem.
+This is why, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support.
 
 Fortunately, this is not a new problem and we have plenty of systems integration or enterprise integration patterns use can use to help us.
 -->
