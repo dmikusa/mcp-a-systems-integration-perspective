@@ -201,9 +201,22 @@ This is why, at it's core, remote MCP is really just a systems integration probl
 
 # Patterns for Building Remote MCP Servers
 
+<div class="only-img">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/blue-pill-red-pill.png)
+
+</div>
+
 <!--
-- Have an API? Wrap it for MCP. In this scenario, MCP works like a proxy to the API. Your MCP server will just translate the MCP requests to REST or gRPC or whatever your existing APIs use. This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (FastMCP). This does require that your open API spec have good detail and documentation to work well, since that is what will be exposed as your MCP metadata.
-- No API? You should consider adding one. An API offers a lot of value in the first place. However, you can wrap a DB and have the MCP server use the DB directly. Think long an hard about doing this though. That is effectively making the MCP server the owner of the DB (or at least strongly coupling the MCP server to your DB). If you later need to expose a REST API for that same data, then you find yourself in a messy situation with two services sharing a DB (schema management challenges, concurrency/transaction issues, load/capacity concerns). I'm not going to say you can't do that, but it is something you want to think about before you go down that road.
+When building your remote MCP server, there are two really two strategies.
+
+1. Do you have an existing API? If so, then wrap it for MCP. In other words, your MCP server becomes a gateway and it will expose a subset of your API as tool calls, resources, etc... 
+   
+   This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (eg. FastMCP). This does require that your Open API spec have detail and documentation to work well though, since that is what will be exposed as your MCP metadata.
+
+2. No API? Ok. You *can* have your remote MCP server make calls to a database (or read your Excel files), but think long and hard about doing that. 
+   
+   What will you do if you need to support some other client that's not an Agent? MCP won't be a good choice and you'll be stuck. If instead you start by exposing a more general purpose API, like with Rest, JSON, and OpenAPI; then you'll be in a much better position when you eventually get a request to support more clients.
 -->
 
 ---
@@ -227,7 +240,17 @@ Good news! All the patterns you already use will work just fine for MCP.
 
 ---
 
+# Demo
+
+---
+
 # Authentication & Authorization
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/bots.jpg)
+
+</div>
 
 <!--
 - Just like most APIs, most MCP services are going to require authentication.
@@ -304,7 +327,11 @@ _footer: Photo by <a href="https://unsplash.com/@officestock?utm_source=unsplash
 
 # Summary
 
-![bg right:40%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/sebastian-herrmann-Ili1gmB9Jes-unsplash.jpg)
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dev-team-priorities.jpg)
+
+</div>
 
 <!--
 In 2025, I wrote a remote MCP server for work. It was hard. It shouldn't have been though.
