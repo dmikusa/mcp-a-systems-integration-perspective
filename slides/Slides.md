@@ -199,7 +199,16 @@ This is why, at it's core, remote MCP is really just a systems integration probl
 
 ---
 
-# General Deployment Patterns
+# Patterns for Building Remote MCP Servers
+
+<!--
+- Have an API? Wrap it for MCP. In this scenario, MCP works like a proxy to the API. Your MCP server will just translate the MCP requests to REST or gRPC or whatever your existing APIs use. This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (FastMCP). This does require that your open API spec have good detail and documentation to work well, since that is what will be exposed as your MCP metadata.
+- No API? You should consider adding one. An API offers a lot of value in the first place. However, you can wrap a DB and have the MCP server use the DB directly. Think long an hard about doing this though. That is effectively making the MCP server the owner of the DB (or at least strongly coupling the MCP server to your DB). If you later need to expose a REST API for that same data, then you find yourself in a messy situation with two services sharing a DB (schema management challenges, concurrency/transaction issues, load/capacity concerns). I'm not going to say you can't do that, but it is something you want to think about before you go down that road.
+-->
+
+---
+
+# Patterns for Deploying Remote MCP Server
 
 <div class="only-img" style="margin-top: -1em">
 
@@ -208,10 +217,12 @@ This is why, at it's core, remote MCP is really just a systems integration probl
 </div>
 
 <!--
-- Have an API? Wrap it for MCP. In this scenario, MCP works like a proxy to the API. Your MCP server will just translate the MCP requests to REST or gRPC or whatever your existing APIs use. This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (FastMCP). This does require that your open API spec have good detail and documentation to work well, since that is what will be exposed as your MCP metadata.
-- No API? You should consider adding one. An API offers a lot of value in the first place. However, you can wrap a DB and have the MCP server use the DB directly. Think long an hard about doing this though. That is effectively making the MCP server the owner of the DB (or at least strongly coupling the MCP server to your DB). If you later need to expose a REST API for that same data, then you find yourself in a messy situation with two services sharing a DB (schema management challenges, concurrency/transaction issues, load/capacity concerns). I'm not going to say you can't do that, but it is something you want to think about before you go down that road.
-- As far as hosting requirements, most MCP servers can be hosted in the same way you're hosting other services, like a REST service. They have similar characteristics and requirements (RAM, CPU, network access, etc...). I like to bundle mine in an OCI container. Then you can deploy to a lot of different services, like AWS ECS, Kubernetes, or even just a VM running Docker/Podman.
-- The cloud vendors do have offerings, like AWS AgentCore, where they can run your MCP services. I would caution against these for a few reasons. Primarily, vendor lock-in, but also because, at the time I write this, these are new offerings which might experience growing pains and you will be subject to those pains the vendor evolves their offering (downtime, functionality limits, poor Terraform support, etc...).
+Good news! All the patterns you already use will work just fine for MCP.
+
+- How are you hosting services now? Kubernetes, AWS ECS, Google Cloud Run, Heroku, ... They're going to work just fine.
+- Ancillary products like load balancers and application firewalls, they should all work fine too.
+- A remote MCP server is just an API using HTTPS for transport. Even if you use the SSE mode, which I don't recommended at this point in time, it's still just HTTPS. All the normal things you're doing to protect your services will likely work with MCP.
+- The cloud vendors do have offerings, like AWS AgentCore, where they wil run your MCP services. I don't see the value though. If you have an existing playbook for how you deploy HTTP-based services, stick with that. Using these MCP-specific services is just going to unnecessarily tie you to that vendor, but also because, at the time I write this, these are new offerings which might experience growing pains. If you use these services, you will be subject to those pains as the vendor evolves their offering (downtime, functionality limits, things changing in the UI, poor Terraform support, etc...).
 -->
 
 ---
