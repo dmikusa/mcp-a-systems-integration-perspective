@@ -27,6 +27,11 @@ paginate    : true
     margin-left: auto;
     margin-right: auto;
 }
+.big-div img {
+    padding-top: 1.5em;
+    height: 300px;
+    width: 300px;
+}
 </style>
 
 <!-- 
@@ -62,7 +67,7 @@ Welcome! This is my session on MCP. Let's get started!
 </div>
 <div class="column center-img">
 
-![drop-shadow width:10em](https://www.7signal.com/hubfs/7SIGNAL-brand-guidelines-logo.png)
+![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/7SIGNAL-LOGO-RGB-CLR-LGHT-BG.svg)
 ![drop-shadow width:10em](https://paketo.io/v2/images/logo-paketo-dark.svg)
 ![drop-shadow width:10em](https://buildpacks.io/images/buildpacks-logo.svg)
 
@@ -98,9 +103,20 @@ Slides are available at the link above.
 
 ---
 
-What's MCP?
+# What's MCP?
 
-![bg right:60%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
+<div class="columns">
+<div class="column" style="margin-top: 6em">
+
+Model Context Protocol
+
+</div>
+<div class="column center-img">
+
+![width:12em height:12em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
+
+</div>
+</div>
 
 <!--
 - A standard for connecting AI applications to remote systems
@@ -111,9 +127,17 @@ What's MCP?
 
 ---
 
-Why do we need MCP? What properties does it have that are valuable? 
+# Why do we need MCP? 
+
+<div class="only-img big-div">
+
+:thinking:
+
+</div>
 
 <!--
+Why do we need MCP? What properties does it have that are valuable?
+
 - It is built to work with AI/LLM chat apps like Claude & ChatGPT. It compliments their needs.
 - Session based. AI/LLM chat apps and agents may have a long running sessions. For example, a chat or an agent that is doing some analysis. MCP doesn't have to be session based, there's a stateless option, but it does have some features which rely on there being a session.
 - Helps with context size. An early pattern that emerged for interacting with AI/LLMs is RAG, retrieval augmented generation, where you fetch a bunch of stuff you think might be helpful and stuff that into the context with your question to the AI/LLM. This has limits though because you don’t know what the AI/LLM will want or need and the context has a finite size. With MCP, we can flip this around. We tell the AI/LLM what’s available and it can tell us what would be helpful. Only sending what’s requested by the AI/LLM reduces context size.
@@ -123,7 +147,20 @@ Why do we need MCP? What properties does it have that are valuable?
 
 ---
 
-Why not Rest and open API?
+# Why not Rest and Open API?
+
+<div class="columns">
+<div class="column">
+
+![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rest-api-icon.webp)
+
+</div>
+<div class="column center-img">
+
+![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/OpenAPI_Logo_Pantone-1.png)
+
+</div>
+</div>
 
 <!--
 - Well, you certainly could use OpenAPI it gives you a standard set of metadata, and a way to find resources that are available so it’s discoverable. 
@@ -135,7 +172,7 @@ Why not Rest and open API?
 
 ---
 
-Do you replace your REST/OpenAPI services with it?
+# Do you replace your REST/OpenAPI services with it?
 
 <!--
 No! It’s not generally useful to say a web or mobile client, but is useful to expose your services to AI/LLMs and Agents though. So, I'm sorry to say, but you need both.
@@ -143,7 +180,7 @@ No! It’s not generally useful to say a web or mobile client, but is useful to 
 
 ---
 
-Not a new Problem!
+# Not a new Problem!
 
 <!--
 You might be thinking, this is not a new problem. As API designers, we have to support may different clients. They all of different capabilities and needs. Not one protocol or approach is going to be perfect for all of them.
@@ -155,7 +192,7 @@ Fortunately, this is not a new problem and we have plenty of systems integration
 
 ---
 
-Systems or Enterprise Integration Patterns to the Rescue
+# Systems or Enterprise Integration Patterns to the Rescue
 
 <!--
 You have lots clients that you want to be able to access your data. From other services running on huge servers all the way down to tiny IoT devices and thin clients. To make them all work efficiently, you can't have one API to rule them all. You need to expose the information those clients care about using an appropriate channel and protocol for those clients.
@@ -165,7 +202,7 @@ REST is great as a general API but MCP, especially if you have Javascript client
 
 ---
 
-General Deployment Patterns
+# General Deployment Patterns
 
 <!--
 - Have an API? Wrap it for MCP. In this scenario, MCP works like a proxy to the API. Your MCP server will just translate the MCP requests to REST or gRPC or whatever your existing APIs use. This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (FastMCP). This does require that your open API spec have good detail and documentation to work well, since that is what will be exposed as your MCP metadata.
@@ -176,7 +213,7 @@ General Deployment Patterns
 
 ---
 
-Authentication & Authorization
+# Authentication & Authorization
 
 <!--
 - Just like most APIs, most MCP services are going to require authentication.
@@ -186,7 +223,7 @@ Authentication & Authorization
 
 ---
 
-What's the same?
+# What's the same?
 
 <!--
 - Fortunately, if you've secured a API with OAuth2, securing your MCP service will be very similar.
@@ -196,7 +233,7 @@ What's the same?
 
 ---
 
-What's different?
+# What's different?
 
 <!--
 - Primarily, it's the client. For a REST API, the client is going to be your SPA app or your Mobile App, or possibly some scripts running using a client credentials grant. These are all things you control, and you would typically defined each of these clients for each of these services statically in your IDP.
@@ -206,7 +243,7 @@ What's different?
 
 ---
 
-Dynamic Client Registration (RFC-7591)
+# Dynamic Client Registration (RFC-7591)
 
 <!--
 - What is DCR? Well, in a nutshell, DCR just requires your IDP to provide an additional endpoint. Potential clients can then send a request to that endpoint which creates a new client with the IDP. The client can then uses the returned client information just like any client created by the IDP.
@@ -216,7 +253,7 @@ Dynamic Client Registration (RFC-7591)
 
 ---
 
-Why DCR is not the answer?
+# Why DCR is not the answer?
 
 <!--
 1. Not all IDPs implement DCR. The ones that do, don't necessarily implement it well.
@@ -227,7 +264,7 @@ Why DCR is not the answer?
 
 ---
 
-Client ID Metadata Documents (CIMD)
+# Client ID Metadata Documents (CIMD)
 
 <!--
 - Fortunately, there is something better: [Client ID Metadata Documents (CIMD)](https://client.dev/).
@@ -237,7 +274,7 @@ Client ID Metadata Documents (CIMD)
 
 ---
 
-It's Jan 2026, what should I do?
+# It's Jan 2026, what should I do?
 
 <!--
 At this point, in Jan 2026, I would not recommend supporting DCR. It's a headache that you want to avoid. You need to check if your IDP, MCP framework and clients support CIMD though. If they do, by all means use it. If CIMD isn't an option, then I would suggest using static client registration. It's a bit more work to set up a remote MCP connection in an MCP client this way, but it allows you to control who's registering clients and put polices in place to effectively manage them (i.e. that customer left, delete their client). Additionally, many of the big clients like Claude and Microsoft Co-Pilot are supporting static registration.
@@ -253,9 +290,7 @@ _footer: Photo by <a href="https://unsplash.com/@officestock?utm_source=unsplash
 
 # Summary
 
-MCP can be Hard
-
-![bg right:60%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/sebastian-herrmann-Ili1gmB9Jes-unsplash.jpg)
+![bg right:40%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/sebastian-herrmann-Ili1gmB9Jes-unsplash.jpg)
 
 <!--
 In 2025, I wrote a remote MCP server for work. It was hard. It shouldn't have been though.
@@ -272,35 +307,25 @@ Reflecting on the experience, it was hard for two main reasons:
 
 ---
 
-<style scoped>
-img {
-    padding-top: 1.5em;
-    height: 300px;
-    width: 300px;
-}
-</style>
-
 # Feedback
 
-<div class="only-img">
+<div class="only-img big-div" style="margin-top: -85px">
 
-![bg](model-context-protocol-a-systems-integration-pers_mikusa_1024007_feedback-code.png)
+![drop-shadow width:12em height:12em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/model-context-protocol-a-systems-integration-pers_mikusa_1024007_feedback-code.png)
+
+<div style="text-align: center; padding-top: 0.5em;">
+
+[https://sfeedback.com/hi4iof](https://sfeedback.com/hi4iof)
+
+</div>
 
 </div>
 
 ---
 
-<style scoped>
-img {
-    padding-top: 1.5em;
-    height: 300px;
-    width: 300px;
-}
-</style>
-
 # Questions?
 
-<div class="only-img">
+<div class="only-img big-div">
 
 :thinking:
 
