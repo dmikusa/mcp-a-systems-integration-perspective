@@ -16,6 +16,11 @@ paginate    : true
 .column {
     flex: 1;
 }
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
 .center-img img {
     display: block;
     margin-left: auto;
@@ -105,17 +110,12 @@ Slides are available at the link above.
 
 # What's MCP?
 
-<div class="columns">
-<div class="column" style="margin-top: 6em">
+<h2 style="margin-left: 10em">Model Context Protocol</h2>
 
-Model Context Protocol
+<div class="only-img big-div" style="margin-top: -3em">
 
-</div>
-<div class="column center-img">
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
 
-![width:12em height:12em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
-
-</div>
 </div>
 
 <!--
@@ -127,9 +127,7 @@ Model Context Protocol
 
 ---
 
-# Why do we need MCP? 
-
-<div class="only-img big-div">
+<div class="only-img">
 
 ![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/why-do-we-need-mcp.jpg)
 
@@ -149,7 +147,7 @@ Why do we need MCP? What properties does it have that are valuable?
 
 # Why not Rest and Open API?
 
-<div class="only-img big-div">
+<div class="only-img" style="margin-top: -1em">
 
 ![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rest-openapi-mcp.jpg)
 
@@ -194,24 +192,20 @@ This is not a new Problem!
 
 As API designers, we have to support may different clients, and MCP is no different. Every client has different capabilities and needs. Not one protocol or approach is going to be perfect for all of them.
 
-This is why, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support.
+REST is great for a general purpose API, for browser or mobile clients, but other clients might work better with gRPC or GraphQL or MQTT. You're just building different interfaces for different clients, and MCP is the interface to use for integrating with LLMs and Agents.
 
-Fortunately, this is not a new problem and we have plenty of systems integration or enterprise integration patterns use can use to help us.
--->
-
----
-
-# Systems or Enterprise Integration Patterns to the Rescue
-
-<!--
-You have lots clients that you want to be able to access your data. From other services running on huge servers all the way down to tiny IoT devices and thin clients. To make them all work efficiently, you can't have one API to rule them all. You need to expose the information those clients care about using an appropriate channel and protocol for those clients.
-
-REST is great as a general API but MCP, especially if you have Javascript clients, but you may have better luck on smaller devices with something like gRPC or GraphQL or MQTT. You're exposing the same data, just in a different way for different clients. This is essentially the API gateway pattern.
+This is why, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support, one more client to integrate with your existing systems.
 -->
 
 ---
 
 # General Deployment Patterns
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/good-news.jpg)
+
+</div>
 
 <!--
 - Have an API? Wrap it for MCP. In this scenario, MCP works like a proxy to the API. Your MCP server will just translate the MCP requests to REST or gRPC or whatever your existing APIs use. This is such a common pattern, that there are tools to take an OpenAPI spec and turn that into an MCP server with almost no code (FastMCP). This does require that your open API spec have good detail and documentation to work well, since that is what will be exposed as your MCP metadata.
