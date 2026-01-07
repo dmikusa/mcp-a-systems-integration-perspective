@@ -100,7 +100,7 @@ Slides are available at the link above.
 
 What's MCP?
 
-![bg left:40%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
+![bg right:60%](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/mcp.png)
 
 <!--
 - A standard for connecting AI applications to remote systems
