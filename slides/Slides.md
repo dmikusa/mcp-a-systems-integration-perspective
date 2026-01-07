@@ -150,12 +150,12 @@ Why do we need MCP? What properties does it have that are valuable?
 # Why not Rest and Open API?
 
 <div class="columns">
-<div class="column">
+<div class="column" style="margin-top: 2em; margin-left: 2em">
 
 ![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rest-api-icon.webp)
 
 </div>
-<div class="column center-img">
+<div class="column center-img" style="margin-top: 6em; margin-right: 2em">
 
 ![drop-shadow width:10em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/OpenAPI_Logo_Pantone-1.png)
 
@@ -172,17 +172,23 @@ Why do we need MCP? What properties does it have that are valuable?
 
 ---
 
-# Do you replace your REST/OpenAPI services with it?
+# So MCP Everywhere?
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/all-your-bases.jpg)
 
 <!--
+Do you replace your REST/OpenAPI services with it?
+
 No! It’s not generally useful to say a web or mobile client, but is useful to expose your services to AI/LLMs and Agents though. So, I'm sorry to say, but you need both.
 -->
 
 ---
 
-# Not a new Problem!
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/glasses-api-mcp.jpg)
 
 <!--
+This is not a new Problem!
+
 You might be thinking, this is not a new problem. As API designers, we have to support may different clients. They all of different capabilities and needs. Not one protocol or approach is going to be perfect for all of them.
 
 This is why, at it's core, remote MCP is really just a systems integration problem.
