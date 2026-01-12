@@ -300,7 +300,7 @@ The minute you host your service, things will be probing it.
 
 <div class="only-img" style="margin-top: -1em">
 
-![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dog-on-fire.jpg)
+![height:13em width:26em](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dog-on-fire.jpg)
 
 </div>
 
@@ -345,12 +345,38 @@ The minute you host your service, things will be probing it.
 
 ---
 
-# It's Jan 2026, what should I do?
+# CIMD FTW?
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/cimd-support.jpg)
+
+</div>
 
 <!--
-At this point, in Jan 2026, I would not recommend supporting DCR. It's a headache that you want to avoid. You need to check if your IDP, MCP framework and clients support CIMD though. If they do, by all means use it. If CIMD isn't an option, then I would suggest using static client registration. It's a bit more work to set up a remote MCP connection in an MCP client this way, but it allows you to control who's registering clients and put polices in place to effectively manage them (i.e. that customer left, delete their client). Additionally, many of the big clients like Claude and Microsoft Co-Pilot are supporting static registration.
+I wish I had better news, but at this point in early Jan 2026, the major LLMs and Agents do not yet support CIMD. I wish I could sit here and tell you to just skip over DCR entirely, but CIMD support isn't available, at least if you're targeting the major LLMs and Agents, [Claude](https://support.claude.com/en/articles/11503834-building-custom-connectors-via-remote-mcp-servers) and ChatGPT.
+-->
 
-Only implement DCR in a new service as a last resort, like if you have a particularly stubborn client that doesn't support static client registration.
+---
+
+# What to do then?
+
+<div class="only-img" style="margin-top: -1em">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/dcr-bad-time.jpg)
+
+</div>
+
+<!--
+Given that, I would recommend the following:
+
+1. Support static client configuration. Both Claude & ChatGPT support using statically configured clients when registering an MCP server. Depending on your audience, this may be sufficient. For example, if you have an internal audience and you can work with them to set things up. This could get difficult if you are trying to allow customers or a wide audience to register as each person would need their own client (do not share clients).
+
+2. If you are lucky, and your IDP has a good implementation of DCR, then you're all set. The key points would be to have a way to control what a user can dynamically register as a client, and have a way to clean up clients automatically. If a user can register a client with any scopes or if a user can register a client with any redirect_uri, that's very bad. If you don't have a way to clean up clients, that's bad too.
+
+3. There are options to use a proxy to add on DCR support, either in your MCP server or as a standalone service. I would not recommend this, as my experiences with it have not been good. I used FastMCP for this, and while it does have support to control client registrations and to manage clients, it does take some coding and customization to get this work. What's worse though is that your proxy effectively becomes a new IDP, complete with different keys to sign your JWT tokens. This means all of your services now have to trust tokens from this proxy as well as your actual IDP, which is a deal breaker in a lot of environments.
+
+Keep an eye on this though. Things are evolving rapidly. Watch out for Claude & ChatGPT (or your target LLM/Agents) supporting the "2025-11-25" version of the MCP spec and CIMD specifically. Also, check with your IDP to see if it supports CIMD or if that is on the roadmap.
 -->
 
 ---
