@@ -140,6 +140,28 @@ That’s the focus of today’s talk.
 
 ---
 
+# What's the Business Value?
+
+<div class="only-img">
+
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/business-value.jpg)
+
+</div>
+
+<!--
+- Similar to any API, it exposes your data to others
+
+- Exposes your data to agents & LLMs, like Claude & ChatGPT
+
+- Empowers those agents to have access to data not baked into the models
+
+- For example, let's say we have a SaaS service that sells widgets. We can expose the widget sales data, and users can then dig through that data using Claude or ChatGPT. "Hey Claude, tell me about the sales for Q4.".
+
+- This is powerful because all you need to build is the MCP server to expose the data. You're not building any chat bots, or agents or paying for expensive LLM calls, yet your users get all the benefits of having access to your SaaS via AI.
+-->
+
+---
+
 <div class="only-img">
 
 ![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/why-do-we-need-mcp.jpg)
@@ -314,6 +336,8 @@ Good news! All the deployment patterns you already use will work just fine for M
 # Demo
 
 <!--
+- Explain the demo
+
 - Show demo code
 
 - Show integration with Claude Desktop
