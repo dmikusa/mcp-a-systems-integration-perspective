@@ -398,13 +398,15 @@ The minute you make your service public, bots and attackers will be probing it.
 </div>
 
 <!--
-- The OAuth2 client.
+- Primarily, the OAuth2 client.
   
-  For a REST API, the client is going to be your SPA app or your Mobile App, or possibly some scripts running using a client credentials grant. These are all things you control, and you would typically defined each of these clients for each of these services statically in your IDP.
+  For a REST API, the client is going to be your SPA app or your Mobile App, or possibly some scripts running using a client credentials grant.
+  
+  These are all things you control, and you would typically define each of these clients for each of these services statically in your IDP.
 
-- With MCP, it's different. Your client is some MCP client/agent. You don't control that client/agent. It might be Claude or ChatGPT or some client/agent that your customer has created.
+- With MCP, it's different. Your client is unknown. It's an MCP client or agent that you don't control. It may be running on a server or laptop that you don't control either. For example, Claude and ChatGPT, but it could also be an agent that your a user or customer has created.
 
-- To account for this, the MCP spec authors recommend the use of an OAuth2 extension called Dynamic Client Registration, which is [RFC-7591](https://www.rfc-editor.org/rfc/rfc7591).
+- To simplify access, the MCP spec authors originally recommended the use of an OAuth2 extension called Dynamic Client Registration, which is [RFC-7591](https://www.rfc-editor.org/rfc/rfc7591).
 -->
 
 ---
@@ -420,9 +422,11 @@ The minute you make your service public, bots and attackers will be probing it.
 <!--
 - What is DCR?
   
-  Well, in a nutshell, DCR just requires your IDP to provide an additional endpoint. Potential clients can then send a request to that endpoint which creates a new client with the IDP. The client can then uses the returned client information just like any client created by the IDP.
+  Well, in a nutshell it's simple. DCR requires your IDP to provide an additional endpoint for registering OAuth2 clients dynamically.
+  
+  A potential client app can send a request to this endpoint which creates a new OAuth2 client within your IDP. The client app can then uses the returned OAuth2 client information just like statically registered OAuth2 client in your IDP.
 
-- Dynamic Client Registration isn't new for MCP. It existed before MCP, but wasn't very popular or used much.
+- Dynamic Client Registration isn't new or specific to MCP. It existed before MCP, but wasn't very popular or used often.
 
 - Having DCR included with MCP has brought a lot of attention to DCR, and unfortunately, I think what has been found is that it doesn't work very well.
 -->
@@ -442,23 +446,29 @@ The main challenges with supporting DCR:
 
 1. Not all IDPs implement DCR. The ones that do, don't necessarily implement it well.
 
-2. If your IDP doesn't implement it, the workarounds are not great. You basically run your own IDP or you need to run a proxy that implements DCR and then proxies other OAuth2 requests to your actual IDP. This isn't great though. It's an avenue for [more security problems](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices#confused-deputy-problem).
+2. If your IDP doesn't implement it, the workarounds are not great. You basically run your own IDP or a IDP proxy (it will implement DCR and then proxy other OAuth2 requests to your actual IDP).
+   
+   Both are an avenue for [security problems](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices#confused-deputy-problem). After all, you use OAuth2 an IDP because you don't want to have to implement this stuff.
 
-There are two main problems with DCR itself:
+As for DCR itself, there are two main problems:
 
 1. There are very few ways to restrict who can create clients.
    
-   This is because you do not know who the person is that's creating the client. You can't trust any of the information they provide, so the only strategies are basic ones like rate limit by IP address, and using allow-lists for properties like scopes and the redirect_url that are requested for the client. This is if your IDP even supports applying limitations. Remember how I said not all IDPs implement this spec well, I know of at least one that doesn't support any limitations.
+   This is because you do not know who the person is that's creating the client.
+   
+   You can't trust any of the information they provide, so the only strategies are basic ones like rate limit by IP address, and using allow-lists for properties like scopes and the redirect_url that are requested for the client. This is if your IDP even supports applying limitations.
 
-2. After a client is created, there is some state that needs to be stored for this client.
+2. You need to store client state.
    
-   If your IDP stores this information on the server side, that is a cost you'll need to manage. Do not overlook this because it is a small amount of data. The trouble with DCR is that you don't know who's making clients, so one person could make a million different clients (accidentally or maliciously).
+   If your IDP stores this information on the server side, that is a cost you'll need to manage. It's a small amount of data, but don't overlook this, it can add up.
    
-The combination of 1. & 2. means you're susceptible to DoS attacks, and the only defense you have against a DoS attacks with DCR is basic rate limiting by IP address.
+Combine these two issues and it means you're susceptible to DoS attacks, with very few mitigations (IP rate limits).
    
-If that's not bad enough, once a client is created, there's virtually no want to clean them up. DoS attacks aside, you still need to eventually clean up dynamically created clients. There's just no good way to do this though.
+If that's not bad enough, once a client is created, there's virtually no want to clean them up. DoS attacks aside, you still need to eventually clean up legitimately created clients. There's just no good way to do this though.
    
-If your IDP supports it, you might be able to look at the last used date, but even then, it's a risk to delete clients. There's no way to know if someone might legitimately try using the client at some future point. This is compounded further by clients like Claude that do not handle their client being deleted well (at least this was the behavior the last time I checked in late 2025).
+If your IDP supports it, you might be able to look at the last used date, but even then, it's a risk to delete clients. There's no way to know if someone might legitimately try using the client at some future point.
+
+This is compounded further by clients like Claude that do not handle their client being deleted well (at least this was the behavior the last time I checked in late 2025).
 -->
 
 ---
