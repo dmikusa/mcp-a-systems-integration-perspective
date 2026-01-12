@@ -516,9 +516,9 @@ I wish I could sit here and tell you to just skip over DCR entirely, but since C
 </div>
 
 <!--
-1. DCR only as a last resort.
+1. Use DCR only as a last resort.
 
-2. Look at your needs & the clients you must support.
+2. Look at your needs & the clients you must support. Because "it depends".
 
 If not DCR and not CIMD then ...
 
@@ -535,9 +535,9 @@ If not DCR and not CIMD then ...
 
 3. DCR Proxy. There are options to use a proxy to add on DCR support, either in your MCP server or as a standalone service. 
    
-   I would not recommend this, as my experiences with it have not been good. I used FastMCP for this, and while it does have support to control client registrations and to manage clients, it does take some coding and customization to get this work.
+   I would not recommend this. I did this with FastMCP, and through no fault of theirs, it creates problems. FastMCP nails the client registration controls and provides ways to mitigate the client storage issue, but what you effectively end up with is a second IDP, complete with different tokens signed by a different set of keys that everything now needs to trust.
    
-   What's worse though is that your proxy effectively becomes a new IDP, complete with different keys to sign your JWT tokens. This means all of your services now have to trust tokens from this proxy as well as your actual IDP, which is a deal breaker in a lot of environments.
+   For us, this was too much effort and a deal breaker. 
 
 Lastly, keep monitoring the situation. Things are evolving rapidly.
 
