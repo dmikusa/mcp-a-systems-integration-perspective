@@ -4,6 +4,6 @@ This repo contains my 'Model Context Protocol: A Systems Integration Perspective
 
 Links to the actual slides:
 
-- [HTML](./output/html/Slides.html)
-- [PDF](./output/Slides.pdf)
-- [PPTX](./output/Slides.pptx)
+- [HTML](./final/Slides.html)
+- [PDF](./final/Slides.pdf)
+- [PPTX](./final/Slides.pptx)
