@@ -249,14 +249,14 @@ REST is great for a general purpose API, for browser or mobile clients, but othe
 
 # Systems Integration All the Way Down
 
-<div class="only-img">
+<div class="only-img" style="margin-top: -1em; margin-left: 5em; width: 28em;">
 
-![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rube-goldberg.png)
+![](https://raw.githubusercontent.com/dmikusa/mcp-a-systems-integration-perspective/refs/heads/main/slides/img/rube-goldberg.jpeg)
 
 </div>
 
 <!--
-This is why, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support, one more client to integrate with your existing systems.
+This is why I feel that, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support, one more client to integrate with your existing systems.
 -->
 
 ---
