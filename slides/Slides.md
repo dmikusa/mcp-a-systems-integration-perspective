@@ -103,7 +103,7 @@ While I'm not covering WiFi or buildpacks in this talk, if you're curious feel f
 </div>
 
 <!--
-Before we get into them, if you're interested, he's a link to the slides.
+So no one has to worry, all of the slides are available online. If you're interested, he's a link.
 -->
 
 ---
@@ -127,13 +127,13 @@ Quick Survey:
 
 - A standard for connecting AI applications to remote systems
 
-- Two types, local and remote. 
+- Two types of MCP servers, local and remote. 
 
-- Local is great and has some uses cases in particular around giving access to things on your local computer. 
+- Local is great and has some compelling uses cases, in particular, around giving access to local resources. Like files, access to the shell or other development tools. 
   
-  Like files, or the shell. Often seen with development tools. There are different goals and concerns with a local MCP server and we’re not going to talk about that today.
+  There are different goals and concerns with a local MCP server and we’re not going to talk about that today.
 
-- Remote MCP servers are typically what a business is going to produce, because business have have services and remote MCP is the way to expose those services to AIs that your customers can use.
+- Remote MCP servers are what you'll see at work. Business deploy things into data centers & runs services, and that's what remote MCP is all about.
   
 That’s the focus of today’s talk.
 -->
@@ -149,15 +149,13 @@ That’s the focus of today’s talk.
 </div>
 
 <!--
-- Similar to any API, it exposes your data to others
+- Similar to other APIs, it exposes your data to others, the difference is target. With MCP, our targets are agents & LLMs, like Claude & ChatGPT
 
-- Exposes your data to agents & LLMs, like Claude & ChatGPT
-
-- Empowers those agents to have access to data not baked into the models
+- The MCP server enables those agents to have access to data not baked into the models
 
 - For example, let's say we have a SaaS service that sells widgets. We can expose the widget sales data, and users can then dig through that data using Claude or ChatGPT. "Hey Claude, tell me about the sales for Q4.".
 
-- This is powerful because all you need to build is the MCP server to expose the data. You're not building any chat bots, or agents or paying for expensive LLM calls, yet your users get all the benefits of having access to your SaaS via AI.
+- This is powerful because it enables you to move fast. All you need to build is the MCP server to expose the data. You're don't have to build chat bots or agents, and your users will still get all the benefits of having access to your data.
 -->
 
 ---
@@ -169,37 +167,35 @@ That’s the focus of today’s talk.
 </div>
 
 <!--
-Why do we need MCP? What properties does it have that are valuable?
+Why do we need MCP?
 
-- Claude & ChatGPT.
+1. Integration with Claude & ChatGPT.
   
-  It is built to work with AI/LLM chat apps like Claude & ChatGPT. It compliments their needs.
+  Claude & ChatGPT make some really great UIs. They provide a lot of value over and above their models. If you want to integrate with that offering, MCP is the way to do it.
 
-- It provides a session. 
+2. Helps with context size. 
   
-  AI/LLM chat apps and agents typically consist of a long running session. For example, a chat conversation can go on for hours or days. An agent may go off and do some task that takes minutes or hours to finish. MCP provides the concept of a session as well.
+  A couple early patterns that emerged for interacting with LLMs are context stuffing and RAG, retrieval augmented generation, where you fetch a bunch of stuff you think might be helpful and stuff that into the context with your question to the LLM. This has limits though because you don’t know what the LLM will want or need and the context has a finite size. 
   
-  At the same time, MCP doesn't have to be stateful. Stateful often means difficult to scale. There is a stateless option which can scale better, but but sacrifices some features, like elicitation, which require state.
-
-- Helps with context size. 
-  
-  An early pattern that emerged for interacting with AI/LLMs is RAG, retrieval augmented generation, where you fetch a bunch of stuff you think might be helpful and stuff that into the context with your question to the AI/LLM. This has limits though because you don’t know what the AI/LLM will want or need and the context has a finite size. 
-  
-  With MCP, we can flip this around. We tell the AI/LLM what’s available and it can tell us what would be helpful. Only sending what’s requested by the AI/LLM reduces context size.
+  With MCP, we can flip this around. We tell the LLM what’s available and it can tell us what would be helpful. Only sending what’s requested by the LLM reduces context size.
 
   This isn't a panacea though, if you return a huge chunk of JSON from an MCP tool call, you'll just as quickly blow up the context.
 
-- Discoverable. 
+3. Discoverability. 
   
-  To allow the AI/LLM to request data from us, we need to have metadata describing what's available and we need to be able to dynamically fetch that data. 
+  Again, we don't know what the LLMs going to want, so things need to be flexible. We need metadata that allows the LLM to discover what's available and to select what it wants. 
   
-  For example, we register the MCP server with an AI/LLM, and it fetches metadata that tells it there is information available about books, authors, and tags. We may then ask it a question about those things, and the AI/LLM will request the data it needs to answer your question. That could be fetching a specific book to give you a summary, or fetching all of the books in a specific category to help you find a new books you'd like.
+  For example, we register the MCP server with an LLM, and when it connects the LLM is provided metadata that tells it there is information available about books, authors, and categories. We may then ask the LLM a question about those things, and the LLM will request the data it needs to answer your question. That could be fetching a specific book to give you a summary, or fetching all of the books in a specific category to help you find a new books you'd like.
 
-- MCP is a specification, so you get better interoperability than you otherwise would.
-  
-  Take this with a grain of salt though, at least at this point in time, because while there is a specification not every server/client implements the full specification. There's a [compatibility list available](https://modelcontextprotocol.info/docs/clients/).
+4. MCP is a specification, so you get better interoperability than you otherwise would.
 
+  Remember how I mentioned above that MCP is the way to integrate with Claude and ChatGPT and other services. This is because its a standard. Before MCP, you could integrate with these services but each had their own way of doing it. With MCP, you implement it one time and can connect to multiple services.
+  
+  I will say, take this with a grain of salt though, at least at this point in time, because while there is a specification not every server or client implements the full specification. 
+  
   The specification is also evolving rapidly!
+
+  There's a [compatibility list available](https://modelcontextprotocol.info/docs/clients/).
 -->
 
 ---
@@ -216,21 +212,24 @@ Why do we need MCP? What properties does it have that are valuable?
 Let's review the important properties of MCP & compare them.
 
 1. Claude/ChatGPT support. No, not natively.
-2. It provides a session. Not with OpenAPI
-3. Context Size. Both.
-4. Discoverability. Both.
-5. Specification. Both.
-6. Different audiences. Possible, but would require two Open API specs.
+
+2. Reduce Context Size. Both.
+
+3. Discoverability. Both.
+
+4. A Specification. Both.
+
+5. Different audiences.
+
+   There are good reasons to have separate APIs. You've likely built your REST/OpenAPI endpoints with certain targets in mind (humans, UIs, apps, etc...), but since LLMs are new, it's possible they were not included in the design and exposing an MCP service allows you to adjust your API to perhaps fit better for the LLM target.
+
+   Possible, but would require two Open API specs. At that point, you may as well just use MCP.
 
 As you can see, there is some overlap.
 
 The big win for MCP is compatibility with agents, especially if you're trying to integrate with Claude & ChatGPT. You are simply limited by the integrations they support.
 
 If you have a custom agent. You might be able to get away with using a REST api, since you're coding the agent. But if you're using an agent library, like AWS AgentCore for example, you again are limited to what's supported, which is very likely to be MCP.
-
-Aside from that, you might also just want separate APIs. You've likely built your REST/OpenAPI endpoints with certain targets in mind (humans, UIs, apps, etc...), but since AI/LLMs are new, it's possible they were not included in the design and exposing an MCP service allows you to adjust your API to perhaps fit better for the AI/LLM target.
-
-MCP isn't the only protocol designed to facilitate better interactions with specific clients, gRPC and GraphQL are similar in that regard.
 -->
 
 ---
@@ -246,7 +245,7 @@ MCP isn't the only protocol designed to facilitate better interactions with spec
 <!--
 Do you replace your REST/OpenAPI services with it?
 
-No! It’s not generally useful to say a web or mobile client, but is useful to expose your services to AI/LLMs and Agents though. So, I'm sorry to say, but you need both.
+No! It’s not generally useful to say a web or mobile client, but is useful to expose your services to LLMs and Agents though. So, I'm sorry to say, but you need both.
 -->
 
 ---
@@ -278,6 +277,8 @@ REST is great for a general purpose API, for browser or mobile clients, but othe
 </div>
 
 <!--
+This brings us to the title of this talk. These are just systems integration challenges.
+
 This is why I feel that, at it's core, remote MCP is really just a systems integration problem. It's just one more client to support, one more client to integrate with your existing systems.
 -->
 
@@ -292,7 +293,7 @@ This is why I feel that, at it's core, remote MCP is really just a systems integ
 </div>
 
 <!--
-When building your remote MCP server, there are two really two strategies.
+When building your remote MCP server, there are two strategies.
 
 1. Do you have an existing API? If so, then wrap it for MCP and create a facade. In other words, your MCP server becomes a gateway and it will expose a subset of your API as tool calls, resources, etc... 
    
@@ -328,15 +329,17 @@ Good news! All the deployment patterns you already use will work just fine for M
 
 - The cloud vendors do have offerings, like AWS AgentCore, where they wil run your MCP services. 
   
-  I don't see the value though. If you have an existing playbook for how you deploy HTTP-based services, stick with that. Using these MCP-specific services is just going to unnecessarily tie you to that vendor, but also because, at the time I write this, these are new offerings which might experience growing pains. If you use these services, you will be subject to those pains as the vendor evolves their offering (downtime, functionality limits, things changing in the UI, poor Terraform support, etc...).
+  I don't see the value though. If you have an existing playbook for how you deploy HTTP-based services, stick with that.
+  
+  Using these MCP-specific services is just going to unnecessarily tie you to that vendor. Not to mention, at the time I write this, these are all new offerings. If you do decide to use these services, you will be subject the growing pains as the vendor evolves their offering (downtime, functionality limits, things changing in the UI, poor Terraform support, etc...).
 -->
 
 ---
 
-# Demo
+# Demo - CodeMash MCP Server
 
 <!--
-- Explain the demo
+- I wrote an MCP server for CodeMash. It has some tool calls which expose data about the conference like the speakers and sessions. The target of this MCP server is to be able to use it with Claude & ChatGPT (or other LLMs) to prepare for the conference.
 
 - Show demo code
 
@@ -345,7 +348,7 @@ Good news! All the deployment patterns you already use will work just fine for M
 
 ---
 
-# Authentication & Authorization
+# Security!
 
 <div class="only-img" style="margin-top: -1em">
 
@@ -354,9 +357,11 @@ Good news! All the deployment patterns you already use will work just fine for M
 </div>
 
 <!--
-The minute you make your service public, bots and attackers will be probing it.
+You may have noticed what we did not have in the demo is any security. That's because I cheated and the demo doesn't really need it. The information is public info, so it doesn't need to be secured.
 
-- Just like most APIs, most MCP services are going to require authentication. Unless you're hosting public information, like with the demo MCP server.
+What if we wanted to allow the MCP server to favorite sessions for the user though? That would require security.
+
+- Just like most APIs, most MCP services are going to require security too.
 
 - Just like when building an API, for MCP, we are going to reach for OAuth2 & OIDC to secure our service.
 
@@ -404,9 +409,9 @@ The minute you make your service public, bots and attackers will be probing it.
   
   These are all things you control, and you would typically define each of these clients for each of these services statically in your IDP.
 
-- With MCP, it's different. Your client is unknown. It's an MCP client or agent that you don't control. It may be running on a server or laptop that you don't control either. For example, Claude and ChatGPT, but it could also be an agent that your a user or customer has created.
-
-- To simplify access, the MCP spec authors originally recommended the use of an OAuth2 extension called Dynamic Client Registration, which is [RFC-7591](https://www.rfc-editor.org/rfc/rfc7591).
+- With MCP, it's different. You won't know the clients in advance and you don't control them either.
+  
+- To help with this, the MCP spec authors originally recommended the use of an OAuth2 extension called Dynamic Client Registration, which is [RFC-7591](https://www.rfc-editor.org/rfc/rfc7591).
 -->
 
 ---
@@ -442,13 +447,15 @@ The minute you make your service public, bots and attackers will be probing it.
 </div>
 
 <!--
-The main challenges with supporting DCR:
+There are a couple of challenges in supporting DCR:
 
 1. Not all IDPs implement DCR. The ones that do, don't necessarily implement it well.
 
-2. If your IDP doesn't implement it, the workarounds are not great. You basically run your own IDP or a IDP proxy (it will implement DCR and then proxy other OAuth2 requests to your actual IDP).
+2. If your IDP doesn't implement it, there are workarounds but it's not a great situation. You basically end up running your own IDP or a IDP proxy (it will implement DCR and then proxy other OAuth2 requests to your actual IDP).
    
-   Both are an avenue for [security problems](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices#confused-deputy-problem). After all, you use OAuth2 an IDP because you don't want to have to implement this stuff.
+   Neither option is fun, and both are an avenue for [security problems](https://modelcontextprotocol.io/specification/2025-11-25/basic/security_best_practices#confused-deputy-problem).
+   
+   After all, you use OAuth2 an IDP because you don't want to have to implement this stuff.
 
 As for DCR itself, there are two main problems:
 
@@ -460,10 +467,10 @@ As for DCR itself, there are two main problems:
 
 2. You need to store client state.
    
-   If your IDP stores this information on the server side, that is a cost you'll need to manage. It's a small amount of data, but don't overlook this, it can add up.
+   If your IDP stores this information on the server side, you need to understand the cost for that. It's a small amount of data per client, but the number of clients can grow very large so this cost can add up.
    
-Combine these two issues and it means you're susceptible to DoS attacks, with very few mitigations (IP rate limits).
-   
+What's worse is if you combine these two drawbacks together, what you have is a DoS attack. Because there are no limitations on creating clients, a user could accidentally or maliciously create millions of users, which in turn runs up your costs.
+
 If that's not bad enough, once a client is created, there's virtually no want to clean them up. DoS attacks aside, you still need to eventually clean up legitimately created clients. There's just no good way to do this though.
    
 If your IDP supports it, you might be able to look at the last used date, but even then, it's a risk to delete clients. There's no way to know if someone might legitimately try using the client at some future point.
@@ -487,6 +494,8 @@ This is compounded further by clients like Claude that do not handle their clien
 - This is very new, added to the 2025-11-25 version of the MCP specification. It is a better way to manage dynamic clients because it puts the burden on the client, not the server.
 
 - In a nutshell, the client must create a metadata document and host it somewhere accessible to the server via HTTPS. The document identifies the client. The client then uses a URL to the metadata document as its client_id when talking to the IDP. The IDP can then fetch the client's metadata and validate it (including the TLS information).
+
+If you notice, this resolves the two issues with DCR that we discussed. We know who is registering the client, so we can put limitations on them, and we do not have to store the client information on the server.
 -->
 
 ---
@@ -502,7 +511,7 @@ This is compounded further by clients like Claude that do not handle their clien
 <!--
 I wish I had better news, but at this point in early Jan 2026, the major LLMs and Agents do not yet support CIMD.
 
-I wish I could sit here and tell you to just skip over DCR entirely, but since CIMD support isn't widely available, at least if you're targeting the major LLMs and Agents, [Claude](https://support.claude.com/en/articles/11503834-building-custom-connectors-via-remote-mcp-servers) and ChatGPT in early 2026, you may still need to support DCR.
+I wish I could sit here and tell you to just skip over DCR entirely, but since CIMD support isn't widely available, at least if you're targeting the major LLMs and Agents, [Claude](https://support.claude.com/en/articles/11503834-building-custom-connectors-via-remote-mcp-servers) and ChatGPT, it's tricky.
 -->
 
 ---
@@ -516,33 +525,40 @@ I wish I could sit here and tell you to just skip over DCR entirely, but since C
 </div>
 
 <!--
-1. Use DCR only as a last resort.
+Ok, so CIMD is out and we'd rather not support DCR, so that leaves us with one option.
 
-2. Look at your needs & the clients you must support. Because "it depends".
-
-If not DCR and not CIMD then ...
-
-1. Support static client configuration. Both Claude & ChatGPT support using statically configured clients when registering an MCP server. Depending on your audience, this may be sufficient. For example, if you have an internal audience and you can work with them to set things up. This could get difficult if you are trying to allow customers or a wide audience to register as each person would need their own client (do not share clients).
-
-2. Lean on your IDP. If you are lucky, and your IDP has a good implementation of DCR, then you're all set.
-
-   The key points:
-
-   1. Have a way to control what a user can dynamically register as a client
-   2. Have a way to clean up clients automatically.
+Support static client configuration. Both Claude & ChatGPT support using statically configured clients when registering an MCP server. Depending on your audience, this may be sufficient. 
    
-   If a user can register a client with any scopes or if a user can register a client with any redirect_uri, that's very bad. If you don't have a way to clean up clients, that's bad too.
+For example, if you have an internal audience and you can work with them to set things up. This could get difficult if you are trying to allow customers or a wide audience to register as each person would need their own client (do not share clients).
 
-3. DCR Proxy. There are options to use a proxy to add on DCR support, either in your MCP server or as a standalone service. 
+If that isn't viable then try to lean on your IDP. If you are lucky, and your IDP has a good implementation of DCR, then you're all set.
+
+Just remember...
+
+1. Have a way to control what a user can dynamically register as a client
+2. Have a way to clean up clients automatically.
+
+If a user can register a client with any scopes then they can potentially elevate their permissions.
+
+If a user can register a client with any redirect_uri, that allows them to impersonate your legitimate sites and try to steal tokens from your users.
+
+If you don't have a way to clean up clients, they will grow and eventually your IDP will send you a bill.
+
+You may be tempted to use a DCR Proxy. This is an option. You can use a proxy to add on DCR support, either in your MCP server or as a standalone service. 
    
-   I would not recommend this. I did this with FastMCP, and through no fault of theirs, it creates problems. FastMCP nails the client registration controls and provides ways to mitigate the client storage issue, but what you effectively end up with is a second IDP, complete with different tokens signed by a different set of keys that everything now needs to trust.
+I would not recommend this. I did this with FastMCP, and through no fault of theirs, it creates problems. FastMCP nails the client registration controls and provides ways to mitigate the client storage issue, but what you effectively end up with is a second IDP, complete with different tokens signed by a different set of keys and now everything in your infrastructure needs to trust tokens signed by those keys also.
    
-   For us, this was too much effort and a deal breaker. 
+For my employer, this was too much effort and a deal breaker.
 
-Lastly, keep monitoring the situation. Things are evolving rapidly.
+The situation may seem grim, but the light at the end of the tunnel is that things are moving fast.
 
-1. Watch out for Claude & ChatGPT (or your target LLM/Agents) supporting the "2025-11-25" version of the MCP spec and CIMD specifically.
-2. Check with your IDP to see if it supports CIMD or if that is on the roadmap.
+Keep monitoring. Hopefully CIMD support will come soon and this transition period will be behind us.
+
+What we need to use CIMD are two things:
+
+1. Claude & ChatGPT (or your target agents) need to support the "2025-11-25" version of the MCP spec and CIMD specifically.
+
+2. Your IDP needs to support CIMD. If they don't, now is a great time to ask them where it's at on their roadmap.
 -->
 
 ---
@@ -560,22 +576,24 @@ In 2025, I wrote a remote MCP server for work. It was hard. It shouldn't have be
 
 Reflecting on the experience, it was hard for two main reasons:
 
-1. MCP isn't a finished protocol. MCP had *three* spec releases in 2025 alone. It's a moving target. This creates all kinds of issues for a business that wants to support MCP.
+1. MCP isn't a finished protocol. MCP had *three* spec releases in 2025 alone. It's a moving target. 
+   
+   Projects and vendors are racing to keep up. Because of this, you encounter bugs, you file issues, you maybe submit PRs, and you wait for new releases.
 
-- Projects and vendors that implement the spec are keeping up at different paces. They don't all implement the full spec the day it's released, so things might be missing or implemented at later dates.
+   Hopefully, the pace of the spec changes slows down in 2026 and we get some stability.
 
-- Implementations from all the vendors are brand new, so none of them are really battle tested, which means you will hit bugs. Find your framework's Issue Tracker and be ready to report issues. For larger providers, cross your fingers and hope the fix the issue quick.
-
-- This isn't all bad though. It also means everything is also improving at a rapid pace. The spec is addressing pain points multiple times a year, and vendors are fixing bugs faster than I can ever remember seeing. While I was building out our MCP server, I hit a few issues with FastMCP and the project had fixes in just a day or two. Similarly, when I was doing our Microsoft Co-pilot integration, when I'd hit a bug, I'd just put down that story for a week, and when I came back to the story the issue would be resolved.
-
-2. Authentication with MCP is a challenge. OAuth2/OIDC can itself be a big hurdle, in fact, I've got a whole separate talk on OAuth2/OIDC. When you layer on things like DCR, it gets worse. Fortunately, the spec improvements are addressing Authentication. You will always need to get over the OAuth2/OIDC hurdle, but CIMD replacing DCR is a huge benefit to developers and operators of MCP servers.
+2. Authentication with MCP is a challenge. OAuth2/OIDC can itself be a big hurdle, in fact, I've got a whole separate talk on that topic. 
+   
+   When you layer on things like DCR, it gets worse. Fortunately, the spec improvements are addressing this.
+   
+   While you will always need to get over the OAuth2 hurdle, CIMD replacing DCR is a huge benefit to developers and operators of MCP servers.
 
 What is the future of MCP?
 
 - Hard to say.
-- It could be huge. I've heard speculation it could be the new WWW, but for AI. Why download web pages, parse HTML, and try to understand something designed to build a GUI, when you could interact directly with an MCP server and fetch structured data?
-- It could also be a flash in the pan, replaced by something else in a year or two. 
-- 🤷 We don't know. Plan & architect accordingly.
+- It could be huge. I've heard speculation it could be as common as REST APIs. Why download web pages, parse HTML, and try to understand something designed to build a GUI, when you could interact directly with an MCP server and fetch structured data?
+- On the other hand, it could also be a flash in the pan, replaced by something else in a year or two. The rate things are changing with respect to AI is astounding.
+- Ultimately, we just don't know. If you implemented an MCP server today, I think you'd still be an early adopter. Given that, my advise is plan & architect accordingly.
 -->
 
 ---
