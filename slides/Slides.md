@@ -569,6 +569,13 @@ Reflecting on the experience, it was hard for two main reasons:
 - This isn't all bad though. It also means everything is also improving at a rapid pace. The spec is addressing pain points multiple times a year, and vendors are fixing bugs faster than I can ever remember seeing. While I was building out our MCP server, I hit a few issues with FastMCP and the project had fixes in just a day or two. Similarly, when I was doing our Microsoft Co-pilot integration, when I'd hit a bug, I'd just put down that story for a week, and when I came back to the story the issue would be resolved.
 
 2. Authentication with MCP is a challenge. OAuth2/OIDC can itself be a big hurdle, in fact, I've got a whole separate talk on OAuth2/OIDC. When you layer on things like DCR, it gets worse. Fortunately, the spec improvements are addressing Authentication. You will always need to get over the OAuth2/OIDC hurdle, but CIMD replacing DCR is a huge benefit to developers and operators of MCP servers.
+
+What is the future of MCP?
+
+- Hard to say.
+- It could be huge. I've heard speculation it could be the new WWW, but for AI. Why download web pages, parse HTML, and try to understand something designed to build a GUI, when you could interact directly with an MCP server and fetch structured data?
+- It could also be a flash in the pan, replaced by something else in a year or two. 
+- 🤷 We don't know. Plan & architect accordingly.
 -->
 
 ---
