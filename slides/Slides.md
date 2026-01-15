@@ -125,7 +125,7 @@ Quick Survey:
 3. Keep them up if you've created an MCP server?
 4. Keep them up if you're a contributor to the MCP spec?
 
-- A standard for connecting AI applications to remote systems
+- A standard for connecting AI applications to a separate resource.
 
 - Two types of MCP servers, local and remote. 
 
